@@ -17,9 +17,11 @@
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
+    "chart.js": "^3.7.1",
     "roboto-fontface": "*",
     "unplugin-auto-import": "^0.7.1",
     "vue": "^3.2.33",
+    "vue-chartjs": "^4.1.0",
     "vue-router": "^4.0.14",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.0.0"
