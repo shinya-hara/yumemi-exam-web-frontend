@@ -24,6 +24,7 @@ module.exports = {
   rules: {
     'import/no-extraneous-dependencies': ['off'],
     'import/no-duplicates': ['off'],
+    'import/prefer-default-export': ['off'],
     'import/extensions': [
       'error',
       'ignorePackages',

@@ -16,16 +16,22 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@mdi/font": "5.9.55",
+    "roboto-fontface": "*",
     "unplugin-auto-import": "^0.7.1",
     "vue": "^3.2.33",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.0.14",
+    "vuetify": "^3.0.0-beta.0",
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.24",
+    "@types/webfontloader": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
     "@vitejs/plugin-vue": "^2.3.1",
     "@vue/test-utils": "^2.0.0-rc.20",
+    "@vuetify/vite-plugin": "^1.0.0-alpha.0",
     "autoprefixer": "^10.4.4",
     "c8": "^7.11.2",
     "esbuild": "^0.14.39",
@@ -41,6 +47,7 @@
     "postcss-html": "^1.4.1",
     "prettier": "^2.6.2",
     "sass": "^1.50.0",
+    "sass-loader": "^10.0.0",
     "stylelint": "^14.7.1",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended-scss": "^6.0.0",
@@ -51,7 +58,9 @@
     "vite": "^2.9.5",
     "vite-plugin-pages": "^0.23.0",
     "vitest": "^0.10.0",
+    "vue-cli-plugin-vuetify": "~2.4.8",
     "vue-eslint-parser": "^8.3.0",
-    "vue-tsc": "^0.34.7"
+    "vue-tsc": "^0.34.7",
+    "vuetify-loader": "^2.0.0-alpha.0"
   }
 }

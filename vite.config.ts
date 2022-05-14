@@ -4,6 +4,7 @@
 import { defineConfig } from 'vite';
 import * as path from 'path';
 import Vue from '@vitejs/plugin-vue';
+import Vuetify from '@vuetify/vite-plugin';
 import Pages from 'vite-plugin-pages';
 import AutoImport from 'unplugin-auto-import/vite';
 
@@ -11,6 +12,11 @@ import AutoImport from 'unplugin-auto-import/vite';
 export default defineConfig({
   plugins: [
     Vue(),
+
+    // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+    Vuetify({
+      autoImport: true,
+    }),
 
     // https://github.com/hannoeru/vite-plugin-pages
     Pages(),
@@ -31,6 +37,8 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+
+  define: { 'process.env': {} },
 
   resolve: {
     alias: {
