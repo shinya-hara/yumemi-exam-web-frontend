@@ -8,7 +8,7 @@
       :key="prefecture.prefCode"
       v-model="selectedPrefectures"
       :label="prefecture.prefName"
-      :value="prefecture.prefName"
+      :value="prefecture.prefCode"
       hide-details
       density="compact"
       inline
@@ -22,9 +22,22 @@
 <script setup lang="ts">
 import LineChart from '@/components/LineChart';
 import { Prefecture, usePrefecture } from '@/composables/usePrefecture';
+import { PopulationPerYear, usePopulation } from '@/composables/usePopulation';
 
 const { prefectures } = usePrefecture();
-const selectedPrefectures = ref<Prefecture[]>([]);
+const { prefecturePopulation, getPrefecturePopulation } = usePopulation();
+
+const selectedPrefectures = ref<Prefecture['prefCode'][]>([
+  // Set default prefectures if needed
+]);
+
+const activePrefecturePopulation = computed<[number, PopulationPerYear][]>(
+  () => {
+    return Object.entries(prefecturePopulation)
+      .filter((item) => selectedPrefectures.value.includes(Number(item[0])))
+      .map((item) => [Number(item[0]), item[1]]);
+  },
+);
 
 const chartData = ref({
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -41,6 +54,18 @@ const chartData = ref({
     },
   ],
 });
+
+watch(
+  selectedPrefectures,
+  async (prefectures) => {
+    await Promise.all(
+      prefectures.map((prefCode) => getPrefecturePopulation(prefCode)),
+    );
+  },
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <style scoped lang="scss">
