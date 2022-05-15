@@ -4,11 +4,11 @@
   <h2 class="text-h6">都道府県</h2>
   <div class="prefectures-container mb-8">
     <v-checkbox
-      v-for="i in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']"
-      :key="i"
-      v-model="selected"
-      :label="i"
-      :value="i"
+      v-for="prefecture in prefectures"
+      :key="prefecture.prefCode"
+      v-model="selectedPrefectures"
+      :label="prefecture.prefName"
+      :value="prefecture.prefName"
       hide-details
       density="compact"
       inline
@@ -21,8 +21,10 @@
 
 <script setup lang="ts">
 import LineChart from '@/components/LineChart';
+import { Prefecture, usePrefecture } from '@/composables/usePrefecture';
 
-const selected = ref([]);
+const { prefectures } = usePrefecture();
+const selectedPrefectures = ref<Prefecture[]>([]);
 
 const chartData = ref({
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
