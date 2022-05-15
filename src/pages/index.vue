@@ -16,7 +16,7 @@
     />
   </div>
 
-  <LineChart :chart-data="chartData" />
+  <LineChart v-if="selectedPrefectures.length" :chart-data="chartData" />
 </template>
 
 <script setup lang="ts">
@@ -39,21 +39,41 @@ const activePrefecturePopulation = computed<[number, PopulationPerYear][]>(
   },
 );
 
-const chartData = ref({
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'Data One',
-      backgroundColor: '#f87979',
-      data: [40, 39, 10, 40, 39, 80, 40],
-    },
-    {
-      label: 'Data Two',
-      backgroundColor: '#287979',
-      data: [20, 69, 30, 50, 29, 10, 90],
-    },
-  ],
+const chartData = computed(() => {
+  if (!activePrefecturePopulation.value.length)
+    return {
+      labels: [],
+      datasets: [],
+    };
+
+  const count = activePrefecturePopulation.value.length;
+  const labels = activePrefecturePopulation.value[0][1].map((item) =>
+    String(item.year),
+  );
+
+  const datasets = activePrefecturePopulation.value.map((pref, i) => {
+    return {
+      label: prefectures.value.find((v) => v.prefCode === pref[0])?.prefName,
+      backgroundColor: getChartLineColor(count, i),
+      data: pref[1].map((item) => item.value),
+    };
+  });
+
+  return {
+    labels,
+    datasets,
+  };
 });
+
+/**
+ * チャートの線の色を表示項目数に応じていい感じに算出する
+ * @param count
+ * @param index
+ */
+const getChartLineColor = (count: number, index: number) => {
+  const hue = (360 /* degree */ / count) /* 表示項目数 */ * index;
+  return `hsl(${hue}, 60%, 60%)`;
+};
 
 watch(
   selectedPrefectures,
