@@ -8,7 +8,7 @@
       :key="prefecture.prefCode"
       v-model="selectedPrefectures"
       :label="prefecture.prefName"
-      :value="prefecture.prefCode"
+      :value="prefecture"
       hide-details
       density="compact"
       inline
@@ -21,71 +21,10 @@
 
 <script setup lang="ts">
 import LineChart from '@/components/LineChart';
-import { Prefecture, usePrefecture } from '@/composables/usePrefecture';
-import { PopulationPerYear, usePopulation } from '@/composables/usePopulation';
+import { usePrefecturePopulation } from '@/composables/usePrefecturePopulation';
 
-const { prefectures } = usePrefecture();
-const { prefecturePopulation, getPrefecturePopulation } = usePopulation();
-
-const selectedPrefectures = ref<Prefecture['prefCode'][]>([
-  // Set default prefectures if needed
-]);
-
-const activePrefecturePopulation = computed<[number, PopulationPerYear][]>(
-  () => {
-    return Object.entries(prefecturePopulation)
-      .filter((item) => selectedPrefectures.value.includes(Number(item[0])))
-      .map((item) => [Number(item[0]), item[1]]);
-  },
-);
-
-const chartData = computed(() => {
-  if (!activePrefecturePopulation.value.length)
-    return {
-      labels: [],
-      datasets: [],
-    };
-
-  const count = activePrefecturePopulation.value.length;
-  const labels = activePrefecturePopulation.value[0][1].map((item) =>
-    String(item.year),
-  );
-
-  const datasets = activePrefecturePopulation.value.map((pref, i) => {
-    return {
-      label: prefectures.value.find((v) => v.prefCode === pref[0])?.prefName,
-      backgroundColor: getChartLineColor(count, i),
-      data: pref[1].map((item) => item.value),
-    };
-  });
-
-  return {
-    labels,
-    datasets,
-  };
-});
-
-/**
- * チャートの線の色を表示項目数に応じていい感じに算出する
- * @param count
- * @param index
- */
-const getChartLineColor = (count: number, index: number) => {
-  const hue = (360 /* degree */ / count) /* 表示項目数 */ * index;
-  return `hsl(${hue}, 60%, 60%)`;
-};
-
-watch(
-  selectedPrefectures,
-  async (prefectures) => {
-    await Promise.all(
-      prefectures.map((prefCode) => getPrefecturePopulation(prefCode)),
-    );
-  },
-  {
-    immediate: true,
-  },
-);
+const { prefectures, selectedPrefectures, chartData } =
+  usePrefecturePopulation();
 </script>
 
 <style scoped lang="scss">

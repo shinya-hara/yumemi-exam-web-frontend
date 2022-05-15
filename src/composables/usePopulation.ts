@@ -1,10 +1,14 @@
 import { PopulationRepository } from '@/repositories/populationRepository';
 import type { PopulationPerYear } from '@/repositories/populationRepository';
+import type { Prefecture } from '@/repositories/prefectureRepository';
 
 export type { PopulationPerYear };
 
 interface PrefecturePopulation {
-  [prefCode: number]: PopulationPerYear;
+  [prefCode: number]: {
+    prefecture: Prefecture;
+    data: PopulationPerYear;
+  };
 }
 
 export const usePopulation = (
@@ -12,12 +16,18 @@ export const usePopulation = (
 ) => {
   const prefecturePopulation: PrefecturePopulation = reactive({});
 
-  const getPrefecturePopulation = async (prefCode: number) => {
+  const getPrefecturePopulation = async (prefecture: Prefecture) => {
     // Return from cache
-    if (prefecturePopulation[prefCode]) return prefecturePopulation[prefCode];
+    if (prefecturePopulation[prefecture.prefCode])
+      return prefecturePopulation[prefecture.prefCode];
 
-    const population = await repository.getPrefecturePopulation(prefCode);
-    prefecturePopulation[prefCode] = population;
+    const population = await repository.getPrefecturePopulation(
+      prefecture.prefCode,
+    );
+    prefecturePopulation[prefecture.prefCode] = {
+      prefecture,
+      data: population,
+    };
     return population;
   };
 

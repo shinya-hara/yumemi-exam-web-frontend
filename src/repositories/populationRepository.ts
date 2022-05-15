@@ -6,7 +6,7 @@ interface PerYearData {
   value: number;
 }
 
-interface ApiResponse {
+interface ApiResponseGetPrefecturePopulation {
   message: string | null;
   result: {
     boundaryYear: number;
@@ -43,7 +43,7 @@ export class PopulationRepository {
   public async getPrefecturePopulation(
     prefCode: number,
   ): Promise<PopulationPerYear> {
-    const { data } = await this.client.get<ApiResponse>(
+    const { data } = await this.client.get<ApiResponseGetPrefecturePopulation>(
       `/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-`,
     );
     return data.result.data[0].data;
